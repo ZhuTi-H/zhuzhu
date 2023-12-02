@@ -9,8 +9,10 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
+
+APPEND_SLASH = True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +29,7 @@ SECRET_KEY = 'django-insecure-a^1-qh-!_nxffullp@@6j0fywa!uu3zrw_+gl209tj18+$ih+8
 DEBUG = True
 
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -38,9 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "corsheaders",
     'rest_framework',
+    'rest_framework_simplejwt',
     'zhuzhu',
+    "corsheaders",
     'user'
 ]
 
@@ -77,7 +80,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'zhuzhu.wsgi.application'
 
+# jwt认证补充
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
 
+DEFAULTS = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1)
+}
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -137,8 +150,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 跨域增加忽略
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = ()
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = ('*')
 # 对应的发送的请求的跨域
 CORS_ALLOW_METHODS = (
     'DELETE',
@@ -148,6 +161,12 @@ CORS_ALLOW_METHODS = (
     'POST',
     'PUT',
     'VIEW',
+)
+
+
+CORS_ALLOWED_ORIGINS = (
+    "http://localhost:8000",
+    "http://127.0.0.1:8000"
 )
 
 CORS_ALLOW_HEADERS = (
@@ -162,4 +181,9 @@ CORS_ALLOW_HEADERS = (
     'x-requested-with',
 )
 
-CORS_ORIGIN_ALLOW_ALL = True
+# SESSION_COOKIE_SECURE = True
+#
+# SESSION_COOKIE_SAMESITE = 'None'
+#
+# CORS_URLS_REGEX = r"^/user/.*$"
+

@@ -17,7 +17,7 @@ class userInfo_modelSerializer(serializers.ModelSerializer):
 
 
 class userRegisterSerializer(serializers.ModelSerializer):
-    userName = serializers.CharField(label='用户名')
+    username = serializers.CharField(label='用户名')
     password = serializers.CharField(label='密码')
     tel = serializers.CharField(label='联系方式')
     emergencyTel = serializers.CharField(label='紧急联系方式')
@@ -26,6 +26,6 @@ class userRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = userInfo_model
-        fields = ('userName', 'password', 'tel', 'emergencyTel', 'email', 'cid')
+        fields = "__all__"
 
 
